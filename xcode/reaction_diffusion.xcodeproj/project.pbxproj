@@ -18,10 +18,9 @@
 		00B9955B1B128DF400A5C623 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B995591B128DF400A5C623 /* IOSurface.framework */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		10F2D2A06DBC4DD8A572E2F0 /* reaction_diffusion_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = B1CD8921F28A4AC7A4D5D5DE /* reaction_diffusion_Prefix.pch */; };
-		CB99EF755F0B44F3ABE7716D /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 1F107267809B402FA0EA2D5F /* CinderApp.icns */; };
-		03F02D4AA6094774AB6AA95A /* Resources.h in Headers */ = {isa = PBXBuildFile; fileRef = 300B4BEBE6044771AA6FD531 /* Resources.h */; };
 		C2F9E273871A4F189253FFC1 /* reaction_diffusionApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE0AD2C84A9D4CF9AF96971F /* reaction_diffusionApp.cpp */; };
+		CB99EF755F0B44F3ABE7716D /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 1F107267809B402FA0EA2D5F /* CinderApp.icns */; };
+		EF25DE731DA5CECA00E3E333 /* RDGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EF25DE721DA5CECA00E3E333 /* RDGrid.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,15 +34,17 @@
 		00B995581B128DF400A5C623 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		00B995591B128DF400A5C623 /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		1F107267809B402FA0EA2D5F /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		300B4BEBE6044771AA6FD531 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
+		83236771C4784A42B689F166 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* reaction_diffusion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = reaction_diffusion.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		FE0AD2C84A9D4CF9AF96971F /* reaction_diffusionApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; path = ../src/reaction_diffusionApp.cpp; sourceTree = "<group>"; name = reaction_diffusionApp.cpp; };
-		300B4BEBE6044771AA6FD531 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ../include/Resources.h; sourceTree = "<group>"; name = Resources.h; };
-		1F107267809B402FA0EA2D5F /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; name = CinderApp.icns; };
-		83236771C4784A42B689F166 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; name = Info.plist; };
-		B1CD8921F28A4AC7A4D5D5DE /* reaction_diffusion_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = reaction_diffusion_Prefix.pch; sourceTree = "<group>"; name = reaction_diffusion_Prefix.pch; };
+		B1CD8921F28A4AC7A4D5D5DE /* reaction_diffusion_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = reaction_diffusion_Prefix.pch; sourceTree = "<group>"; };
+		EF25DE711DA5CEC400E3E333 /* RDGrid.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = RDGrid.hpp; path = ../include/RDGrid.hpp; sourceTree = "<group>"; };
+		EF25DE721DA5CECA00E3E333 /* RDGrid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RDGrid.cpp; path = ../src/RDGrid.cpp; sourceTree = "<group>"; };
+		FE0AD2C84A9D4CF9AF96971F /* reaction_diffusionApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = reaction_diffusionApp.cpp; path = ../src/reaction_diffusionApp.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,9 +69,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		01B97315FEAEA392516A2CEA /* Blocks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Blocks;
+			sourceTree = "<group>";
+		};
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				EF25DE721DA5CECA00E3E333 /* RDGrid.cpp */,
 				FE0AD2C84A9D4CF9AF96971F /* reaction_diffusionApp.cpp */,
 			);
 			name = Source;
@@ -124,16 +133,10 @@
 			name = reaction_diffusion;
 			sourceTree = "<group>";
 		};
-		01B97315FEAEA392516A2CEA /* Blocks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Blocks;
-			sourceTree = "<group>";
-		};
 		29B97315FDCFA39411CA2CEA /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				EF25DE711DA5CEC400E3E333 /* RDGrid.hpp */,
 				300B4BEBE6044771AA6FD531 /* Resources.h */,
 				B1CD8921F28A4AC7A4D5D5DE /* reaction_diffusion_Prefix.pch */,
 			);
@@ -184,6 +187,8 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "reaction_diffusion" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -220,6 +225,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2F9E273871A4F189253FFC1 /* reaction_diffusionApp.cpp in Sources */,
+				EF25DE731DA5CECA00E3E333 /* RDGrid.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,17 +236,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = reaction_diffusion_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = reaction_diffusion_Prefix.pch;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
@@ -262,12 +268,12 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = reaction_diffusion_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"NDEBUG=1",
 					"$(inherited)",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = reaction_diffusion_Prefix.pch;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
@@ -284,7 +290,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CINDER_PATH = "../../../cinder";
+				CINDER_PATH = ../../../cinder;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++11";
 				CLANG_CXX_LIBRARY = "libc++";
 				ENABLE_TESTABILITY = YES;
@@ -302,7 +308,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CINDER_PATH = "../../../cinder";
+				CINDER_PATH = ../../../cinder;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++11";
 				CLANG_CXX_LIBRARY = "libc++";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;

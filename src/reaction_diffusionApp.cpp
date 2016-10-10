@@ -2,33 +2,39 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 
+#include "RDGrid.hpp"
+
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-class reaction_diffusionApp : public App {
+class ReactionDiffusionApp : public App {
   public:
 	void setup() override;
-	void mouseDown( MouseEvent event ) override;
 	void update() override;
 	void draw() override;
+
+	RDGridPtr theGrid;
 };
 
-void reaction_diffusionApp::setup()
+void ReactionDiffusionApp::setup()
 {
+	theGrid = RDGridPtr(new RDGrid(getWindowWidth(), getWindowHeight()));
+	theGrid->setupCircle(20.0f);
 }
 
-void reaction_diffusionApp::mouseDown( MouseEvent event )
+void ReactionDiffusionApp::update()
 {
+	theGrid->update();
 }
 
-void reaction_diffusionApp::update()
+void ReactionDiffusionApp::draw()
 {
+	gl::clear( Color( 0, 0, 0 ) );
+
+	theGrid->draw();
+
+	std::cout << getAverageFps() << std::endl;
 }
 
-void reaction_diffusionApp::draw()
-{
-	gl::clear( Color( 0, 0, 0 ) ); 
-}
-
-CINDER_APP( reaction_diffusionApp, RendererGl )
+CINDER_APP( ReactionDiffusionApp, RendererGl )
