@@ -4,90 +4,76 @@
 
 using std::vector;
 
-RDGrid::RDGrid(int width, int height):
-mWidth(width), mHeight(height) {
-	mGrid = vector<Color>(width * height, Color(0.0f, 1.0f, 0.0f));
-	mViewTex = gl::Texture2d::create(width, height);
+RDGridPtr RDGrid::create(int width, int height) {
+	return RDGridPtr(new RDGrid(width, height));
 }
 
-Color & RDGrid::indexGrid(int x, int y) {
-	return mGrid[x + mWidth * y];
+RDGrid::RDGrid(int width, int height):
+mWidth(width), mHeight(height) {
+	gl::Texture2d::Format colorTextureFormat = gl::Texture2d::Format()
+		.internalFormat(GL_RGB32F)
+		.wrap(GL_REPEAT);
+	gl::Fbo::Format gridFboFmt = gl::Fbo::Format().colorTexture(colorTextureFormat);
+	mSourceFbo = gl::Fbo::create(width, height, gridFboFmt);
+	mDestFbo = gl::Fbo::create(width, height, gridFboFmt);
+
+	mRDProgram = gl::GlslProg::create(app::loadAsset("v_passThrough.glsl"), app::loadAsset("f_reactionDiffusion.glsl"));
+	mRDProgram->uniform("gridWidth", mWidth);
+	mRDProgram->uniform("gridHeight", mHeight);
+	mRDProgram->uniform("uPrevFrame", mRDReadFboBinding);
+
+	mRenderRDProgram = gl::GlslProg::create(app::loadAsset("v_passThrough.glsl"), app::loadAsset("f_renderGrid.glsl"));
+	mRenderRDProgram->uniform("uGridSampler", mRDRenderFboBinding);
+}
+
+Color & goIndexGrid(vector<Color> * grid, int width, int x, int y) {
+	return (*grid)[x + width * y];
 }
 
 void RDGrid::setupCircle(int rad) {
+	auto initVector = vector<Color>(mWidth * mHeight, Color(0.0f, 1.0f, 0.0f));
+
 	vec2 center = vec2(mWidth / 2.0f, mHeight / 2.0f);
-	int steps = 100;
+	int const steps = 100;
 	float angleStep = 2.0f * glm::pi<float>() / (float) steps;
 	for (int s = 0; s < steps; s++) {
 		vec2 radialDirection = normalize(vec2(cos(s * angleStep), sin(s * angleStep)));
-		for (int mul = -1; mul <= 1; mul++) {
+		for (int mul = -4; mul <= 4; mul++) {
 			vec2 pos = center + radialDirection * (float) rad + radialDirection * (float) mul;
-			indexGrid((int) pos.x, (int) pos.y) = Color(0.0f, 0.0f, 1.0f);
+			int x = (int) pos.x;
+			int y = (int) pos.y;
+			goIndexGrid(& initVector, mWidth, x, y) = Color(0.0f, 0.0f, 1.0f);
 		}
 	}
-}
 
-float convoluteA(float ul, float u, float ur, float l, float c, float r, float bl, float b, float br) {
-	return (
-		0.05f * ul +
-		0.2f * u +
-		0.05f * ur +
-		0.2f * l +
-		-1.f * c +
-		0.2f * r +
-		0.05f * bl +
-		0.2f * b +
-		0.05f * br
-	);
-}
+	auto initTexture = gl::Texture2d::create(initVector.data(), GL_RGB, mWidth, mHeight, gl::Texture2d::Format().dataType(GL_FLOAT).internalFormat(GL_RGB32F));
 
-float convoluteB(float ul, float u, float ur, float l, float c, float r, float bl, float b, float br) {
-	return (
-		0.05f * ul +
-		0.2f * u +
-		0.05f * ur +
-		0.2f * l +
-		-1.f * c +
-		0.2f * r +
-		0.05f * bl +
-		0.2f * b +
-		0.05f * br
-	);
-}
+	gl::ScopedFramebuffer scpFB(mSourceFbo);
 
-static float diffusionRateA = 1.0f;
-static float diffusionRateB = 0.5f;
-// static float feedRateA = 0.055;
-// static float killRateB = 0.062;
-static float feedRateA = 0.0545;
-static float killRateB = 0.062;
+	gl::clear(Color( 0, 1, 1 ));
+
+	gl::setMatricesWindow(mWidth, mHeight);
+
+	gl::draw(initTexture, Rectf(0, 0, mWidth, mHeight));
+}
 
 // What do you do at the edges of the image?
 void RDGrid::update() {
-	auto newGrid = vector<Color>(mWidth * mHeight, Color(0.0f, 1.0f, 0.0f));
-	int const buffer = 1;
-	for (int x = buffer; x < mWidth - buffer; x++) {
-		for (int y = buffer; y < mHeight - buffer; y++) {
-			float curA = indexGrid(x, y).g;
-			float curB = indexGrid(x, y).b;
-			float ABB = curA * curB * curB;
-			float diffA = diffusionRateA * convoluteA(indexGrid(x-1, y-1).g, indexGrid(x, y-1).g, indexGrid(x+1, y-1).g, indexGrid(x-1, y).g, indexGrid(x, y).g, indexGrid(x+1, y).g, indexGrid(x-1, y+1).g, indexGrid(x, y+1).g, indexGrid(x+1, y+1).g);
-			float diffB = diffusionRateB * convoluteB(indexGrid(x-1, y-1).b, indexGrid(x, y-1).b, indexGrid(x+1, y-1).b, indexGrid(x-1, y).b, indexGrid(x, y).b, indexGrid(x+1, y).b, indexGrid(x-1, y+1).b, indexGrid(x, y+1).b, indexGrid(x+1, y+1).b);
+	gl::ScopedTextureBind scpTex(mSourceFbo->getColorTexture(), mRDReadFboBinding);
+	gl::ScopedGlslProg scpShader(mRDProgram);
 
-			// newGrid[x + mWidth * y].g = curA;
-			// newGrid[x + mWidth * y].b = curB;
+	gl::ScopedFramebuffer scpFB(mDestFbo);
 
-			newGrid[x + mWidth * y].g = curA + (diffA - ABB + feedRateA * (1.0f - curA));
-			newGrid[x + mWidth * y].b = curB + (diffB + ABB - (feedRateA + killRateB) * curB);
+	gl::drawSolidRect(Rectf(0, 0, mWidth, mHeight));
 
-			// newGrid[x + mWidth * y].g = curA + diffA;
-			// newGrid[x + mWidth * y].b = curB + diffB;
-		}
-	}
-	mGrid = newGrid;
+	std::swap(mSourceFbo, mDestFbo);
 }
 
 void RDGrid::draw() {
-	mViewTex->update(mGrid.data(), GL_RGB, GL_FLOAT, 0, mWidth, mHeight);
-	gl::draw(mViewTex);
+	gl::ScopedTextureBind scpTex(mDestFbo->getColorTexture(), mRDRenderFboBinding);
+	gl::ScopedGlslProg scpShader(mRenderRDProgram);
+
+	gl::drawSolidRect(Rectf(0, 0, mWidth, mHeight));
+
+	// gl::draw(mDestFbo->getColorTexture(), Rectf(0, 0, mWidth, mHeight));
 }

@@ -123,6 +123,7 @@
 		29B97314FDCFA39411CA2CEA /* reaction_diffusion */ = {
 			isa = PBXGroup;
 			children = (
+				EF4A915B1DAC1BCD005F66CB /* New Group */,
 				01B97315FEAEA392516A2CEA /* Blocks */,
 				29B97315FDCFA39411CA2CEA /* Headers */,
 				080E96DDFE201D6D7F000001 /* Source */,
@@ -159,6 +160,13 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EF4A915B1DAC1BCD005F66CB /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "New Group";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

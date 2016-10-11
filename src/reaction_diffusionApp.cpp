@@ -9,32 +9,41 @@ using namespace ci::app;
 using namespace std;
 
 class ReactionDiffusionApp : public App {
-  public:
+public:
+	static void prepSettings(Settings * settings);
 	void setup() override;
 	void update() override;
 	void draw() override;
 
-	RDGridPtr theGrid;
+	RDGridPtr mTheGrid;
 };
+
+void ReactionDiffusionApp::prepSettings(Settings * settings) {
+	// settings->setFullScreen();
+	settings->setTitle("Reaction Diffusion Interpretation");
+	// settings->setHighDensityDisplayEnabled();
+}
 
 void ReactionDiffusionApp::setup()
 {
-	theGrid = RDGridPtr(new RDGrid(getWindowWidth(), getWindowHeight()));
-	theGrid->setupCircle(20.0f);
+	mTheGrid = RDGrid::create(getWindowWidth(), getWindowHeight());
+	mTheGrid->setupCircle(20.0f);
 }
 
 void ReactionDiffusionApp::update()
 {
-	theGrid->update();
+	for (int i = 0; i < 12; i++) {
+	    mTheGrid->update();
+	}
 }
 
 void ReactionDiffusionApp::draw()
 {
 	gl::clear( Color( 0, 0, 0 ) );
 
-	theGrid->draw();
+	mTheGrid->draw();
 
-	std::cout << getAverageFps() << std::endl;
+	gl::drawString(std::to_string(getAverageFps()), vec2(10.0f, 20.0f), ColorA(0.0f, 0.0f, 0.0f, 1.0f));
 }
 
-CINDER_APP( ReactionDiffusionApp, RendererGl )
+CINDER_APP( ReactionDiffusionApp, RendererGl, & ReactionDiffusionApp::prepSettings )
