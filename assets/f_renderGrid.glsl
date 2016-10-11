@@ -28,6 +28,9 @@ void main() {
   // vec3 baseColor = vec3(1.0 - step(0.2, B));
 
   // vec3 baseColor = vec3(1.0 - smoothstep(0.5, 1.0, B + 0.5));
+  // baseColor = invert(step(0.01, B)) * cos(sin(baseColor));
+
+  vec3 baseColor = vec3(tan(4.2 * B), sin(5.1423 * B), cos(4.12312 * B)) * step(0.01, B);
 
   vec3 darkTurquoise = fromRGB(3, 109, 104);
   vec3 white = fromRGB(255, 255, 255);
@@ -38,7 +41,7 @@ void main() {
   // float normB = smoothstep(0.5, 1.0, B + 0.5);
   // float normB = step(0.2, B);
   float normB = smoothstep(0.13, 0.3, B);
-  vec3 baseColor = mix(darkblue, turquoise, normB);
+  // vec3 baseColor = mix(darkblue, turquoise, normB);
 
   FragColor = vec4(baseColor, 1.0);
 }
