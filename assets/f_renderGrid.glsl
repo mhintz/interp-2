@@ -11,8 +11,8 @@ void main() {
   float A = gridValues.g;
   float B = gridValues.b;
 
-  vec3 baseColor = vec3(0.0, A, B);
-  // vec3 baseColor = vec3(1.0 - step(0.2, B));
+  // vec3 baseColor = vec3(0.0, A, B);
+  vec3 baseColor = vec3(1.0 - step(0.2, B));
 
   FragColor = vec4(baseColor, 1.0);
 }
