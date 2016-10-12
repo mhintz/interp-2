@@ -40,11 +40,11 @@ float convoluteB(float ul, float u, float ur, float l, float c, float r, float b
 const float diffusionRateA = 1.0;
 const float diffusionRateB = 0.5;
 
-// const float feedRateA = 0.0545;
-// const float killRateB = 0.062;
+const float feedRateA = 0.0545;
+const float killRateB = 0.062;
 
-const float feedRateA = 0.014;
-const float killRateB = 0.047;
+// const float feedRateA = 0.014;
+// const float killRateB = 0.047;
 
 // const float feedRateA = 0.024;
 // const float killRateB = 0.058;

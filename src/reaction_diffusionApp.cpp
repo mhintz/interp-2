@@ -18,6 +18,8 @@ public:
 	void update() override;
 	void draw() override;
 
+	void mouseDrag(MouseEvent evt) override;
+
 	void drawVectorToFBO(std::vector<Color> const & pixelBuffer);
 	void setupRoundedSquareRD(float side);
 	void setupCircleRD(float rad);
@@ -27,6 +29,7 @@ public:
 	void drawRD();
 
 	int mWidth, mHeight;
+
 	gl::FboRef mSourceFbo;
 	gl::FboRef mDestFbo;
 
@@ -101,6 +104,14 @@ void ReactionDiffusionApp::draw()
 
 	// Draw the framerate
 	gl::drawString(std::to_string(getAverageFps()), vec2(10.0f, 20.0f), ColorA(0.0f, 0.0f, 0.0f, 1.0f));
+}
+
+void ReactionDiffusionApp::mouseDrag(MouseEvent evt) {
+	gl::ScopedFramebuffer scpFB(mSourceFbo);
+	Color setValue = evt.isMetaDown() ? Color(0, 1, 0) : Color(0, 0, 1);
+	float radius = evt.isMetaDown() ? 50.0f : 10.0f;
+	gl::ScopedColor scpC(setValue);
+	gl::drawSolidCircle(evt.getPos(), radius);
 }
 
 Color & idxGrid(std::vector<Color> * grid, int width, int x, int y) {
