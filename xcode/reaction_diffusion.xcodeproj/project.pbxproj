@@ -20,7 +20,6 @@
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		C2F9E273871A4F189253FFC1 /* reaction_diffusionApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE0AD2C84A9D4CF9AF96971F /* reaction_diffusionApp.cpp */; };
 		CB99EF755F0B44F3ABE7716D /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 1F107267809B402FA0EA2D5F /* CinderApp.icns */; };
-		EF25DE731DA5CECA00E3E333 /* RDGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EF25DE721DA5CECA00E3E333 /* RDGrid.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,8 +41,6 @@
 		83236771C4784A42B689F166 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* reaction_diffusion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = reaction_diffusion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1CD8921F28A4AC7A4D5D5DE /* reaction_diffusion_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = reaction_diffusion_Prefix.pch; sourceTree = "<group>"; };
-		EF25DE711DA5CEC400E3E333 /* RDGrid.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = RDGrid.hpp; path = ../include/RDGrid.hpp; sourceTree = "<group>"; };
-		EF25DE721DA5CECA00E3E333 /* RDGrid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RDGrid.cpp; path = ../src/RDGrid.cpp; sourceTree = "<group>"; };
 		FE0AD2C84A9D4CF9AF96971F /* reaction_diffusionApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = reaction_diffusionApp.cpp; path = ../src/reaction_diffusionApp.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -79,7 +76,6 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				EF25DE721DA5CECA00E3E333 /* RDGrid.cpp */,
 				FE0AD2C84A9D4CF9AF96971F /* reaction_diffusionApp.cpp */,
 			);
 			name = Source;
@@ -137,7 +133,6 @@
 		29B97315FDCFA39411CA2CEA /* Headers */ = {
 			isa = PBXGroup;
 			children = (
-				EF25DE711DA5CEC400E3E333 /* RDGrid.hpp */,
 				300B4BEBE6044771AA6FD531 /* Resources.h */,
 				B1CD8921F28A4AC7A4D5D5DE /* reaction_diffusion_Prefix.pch */,
 			);
@@ -233,7 +228,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2F9E273871A4F189253FFC1 /* reaction_diffusionApp.cpp in Sources */,
-				EF25DE731DA5CECA00E3E333 /* RDGrid.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
