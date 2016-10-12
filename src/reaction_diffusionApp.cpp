@@ -87,10 +87,11 @@ void ReactionDiffusionApp::draw()
 {
 	gl::clear(Color(0, 0, 0));
 
-	// Draws the reaction-diffusion FBO
-	gl::ScopedTextureBind scpTex(mDestFbo->getColorTexture(), mRDRenderFboBinding);
 	// For debugging initial state
 	// gl::ScopedTextureBind scpTex(mSourceFbo->getColorTexture(), mRDRenderFboBinding);
+
+	// Draws the reaction-diffusion FBO
+	gl::ScopedTextureBind scpTex(mDestFbo->getColorTexture(), mRDRenderFboBinding);
 	// The reaction-diffusion render shader
 	gl::ScopedGlslProg scpShader(mRenderRDProgram);
 	// Draw a full screen rectangle
