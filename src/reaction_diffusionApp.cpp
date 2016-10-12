@@ -19,6 +19,7 @@ public:
 	void draw() override;
 
 	void drawVectorToFBO(std::vector<Color> const & pixelBuffer);
+	void setupRoundedSquareRD(float side);
 	void setupCircleRD(int rad);
 	void setupSquareRD(int side);
 
@@ -64,6 +65,7 @@ void ReactionDiffusionApp::setup()
 
 	// setupCircleRD(20.0f);
 	setupSquareRD(40);
+	// setupRoundedSquareRD(40);
 }
 
 void ReactionDiffusionApp::update()
@@ -113,6 +115,22 @@ void ReactionDiffusionApp::drawVectorToFBO(std::vector<Color> const & pixelBuffe
 	gl::draw(initTexture, Rectf(0, 0, mWidth, mHeight));
 }
 
+void ReactionDiffusionApp::setupRoundedSquareRD(float side) {
+	vec2 center(mWidth / 2.0f, mHeight / 2.0f);
+	float halfSide = side / 2.0f;
+
+	gl::ScopedFramebuffer scpFB(mSourceFbo);
+
+	// Clear to all A
+	gl::clear(Color(0, 1, 0));
+
+	// Initial state in a certain area is all B
+	gl::ScopedColor scpC(Color(0, 0, 1));
+	// Not sure why setting line width here doesn't work... seems a bit like a bug to me :(
+	gl::ScopedLineWidth scpLW(8.0f);
+	gl::drawStrokedRoundedRect(Rectf(center.x - halfSide, center.y - halfSide, center.x + halfSide, center.y + halfSide), 10);
+}
+
 void ReactionDiffusionApp::setupCircleRD(int rad) {
 	auto initVector = std::vector<Color>(mWidth * mHeight, Color(0.0f, 1.0f, 0.0f));
 
@@ -131,35 +149,17 @@ void ReactionDiffusionApp::setupCircleRD(int rad) {
 }
 
 void ReactionDiffusionApp::setupSquareRD(int side) {
-	auto initVector = std::vector<Color>(mWidth * mHeight, Color(0.0f, 1.0f, 0.0f));
+	vec2 center(mWidth / 2.0f, mHeight / 2.0f);
+	float halfSide = side / 2.0f;
 
-	ivec2 const center = ivec2(mWidth / 2, mHeight / 2);
-	int const halfSide = side / 2;
+	gl::ScopedFramebuffer scpFB(mSourceFbo);
 
-	// Iterate modifier = -1, modifier = 1
-	for (int modifier = -1; modifier <= 1; modifier += 2) {
-		// Will be upper left, then lower right
-		ivec2 const start = center + ivec2(modifier * halfSide, modifier * halfSide);
-		int pad = 4;
+	// All A
+	gl::clear(Color(0, 1, 0));
 
-		// Iterate along x-direction, fill out along y-direction
-		for (int xoff = -pad; xoff <= side + pad; xoff++) {
-			for (int yoff = -pad; yoff <= pad; yoff++) {
-				ivec2 pos = start + ivec2(-modifier * xoff, yoff);
-				idxGrid(& initVector, mWidth, pos.x, pos.y) = Color(0.0f, 0.0f, 1.0f);
-			}
-		}
-
-		// Iterate along the y-direction, fill out along x-direction
-		for (int yoff = -pad; yoff <= side + pad; yoff++) {
-			for (int xoff = -pad; xoff <= pad; xoff++) {
-				ivec2 pos = start + ivec2(xoff, -modifier * yoff);
-				idxGrid(& initVector, mWidth, pos.x, pos.y) = Color(0.0f, 0.0f, 1.0f);
-			}
-		}
-	}
-
-	drawVectorToFBO(initVector);
+	// All B
+	gl::ScopedColor scpC(Color(0, 0, 1));
+	gl::drawStrokedRect(Rectf(center.x - halfSide, center.y - halfSide, center.x + halfSide, center.y + halfSide), 8);
 }
 
 CINDER_APP( ReactionDiffusionApp, RendererGl, & ReactionDiffusionApp::prepSettings )
