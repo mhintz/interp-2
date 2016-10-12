@@ -20,8 +20,8 @@ public:
 
 	void drawVectorToFBO(std::vector<Color> const & pixelBuffer);
 	void setupRoundedSquareRD(float side);
-	void setupCircleRD(int rad);
-	void setupSquareRD(int side);
+	void setupCircleRD(float rad);
+	void setupSquareRD(float side);
 
 	void updateRD();
 	void drawRD();
@@ -63,7 +63,7 @@ void ReactionDiffusionApp::setup()
 
 	gl::setMatricesWindow(mWidth, mHeight);
 
-	// setupCircleRD(20.0f);
+	// setupCircleRD(20);
 	setupSquareRD(40);
 	// setupRoundedSquareRD(40);
 }
@@ -126,29 +126,23 @@ void ReactionDiffusionApp::setupRoundedSquareRD(float side) {
 
 	// Initial state in a certain area is all B
 	gl::ScopedColor scpC(Color(0, 0, 1));
+
 	// Not sure why setting line width here doesn't work... seems a bit like a bug to me :(
 	gl::ScopedLineWidth scpLW(8.0f);
 	gl::drawStrokedRoundedRect(Rectf(center.x - halfSide, center.y - halfSide, center.x + halfSide, center.y + halfSide), 10);
 }
 
-void ReactionDiffusionApp::setupCircleRD(int rad) {
-	auto initVector = std::vector<Color>(mWidth * mHeight, Color(0.0f, 1.0f, 0.0f));
+void ReactionDiffusionApp::setupCircleRD(float rad) {
+	gl::ScopedFramebuffer scpFB(mSourceFbo);
 
-	vec2 center = vec2(mWidth / 2.0f, mHeight / 2.0f);
-	int const steps = 100;
-	float angleStep = 2.0f * glm::pi<float>() / (float) steps;
-	for (int s = 0; s < steps; s++) {
-		vec2 radialDirection = normalize(vec2(cos(s * angleStep), sin(s * angleStep)));
-		for (int mul = -4; mul <= 4; mul++) {
-			ivec2 pos(center + radialDirection * (float) rad + radialDirection * (float) mul);
-			idxGrid(& initVector, mWidth, pos.x, pos.y) = Color(0.0f, 0.0f, 1.0f);
-		}
-	}
+	gl::clear(Color(0, 1, 0));
 
-	drawVectorToFBO(initVector);
+	gl::ScopedColor scpC(Color(0, 0, 1));
+
+	gl::drawStrokedCircle(vec2(mWidth / 2.0f, mHeight / 2.0f), rad, 8.0f);
 }
 
-void ReactionDiffusionApp::setupSquareRD(int side) {
+void ReactionDiffusionApp::setupSquareRD(float side) {
 	vec2 center(mWidth / 2.0f, mHeight / 2.0f);
 	float halfSide = side / 2.0f;
 
@@ -159,6 +153,7 @@ void ReactionDiffusionApp::setupSquareRD(int side) {
 
 	// All B
 	gl::ScopedColor scpC(Color(0, 0, 1));
+
 	gl::drawStrokedRect(Rectf(center.x - halfSide, center.y - halfSide, center.x + halfSide, center.y + halfSide), 8);
 }
 
