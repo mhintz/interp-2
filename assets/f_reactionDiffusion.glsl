@@ -40,26 +40,12 @@ float convoluteB(float ul, float u, float ur, float l, float c, float r, float b
 const float diffusionRateA = 1.0;
 const float diffusionRateB = 0.5;
 
+uniform float feedRateA;
+uniform float killRateB;
+
 // To make stuff get kind weird:
 // const float diffusionRateA = 0.4;
 // const float diffusionRateB = 0.05;
-
-const float feedRateA = 0.0545;
-const float killRateB = 0.062;
-
-// const float feedRateA = 0.014;
-// const float killRateB = 0.047;
-
-// const float feedRateA = 0.024;
-// const float killRateB = 0.058;
-
-// Type rho
-// const float feedRateA = 0.090;
-// const float killRateB = 0.059;
-
-// Type sigma
-// const float feedRateA = 0.110;
-// const float killRateB = 0.0523;
 
 void main() {
   float xinc = 1.0 / gridWidth;

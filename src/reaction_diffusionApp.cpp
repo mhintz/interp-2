@@ -17,6 +17,7 @@ public:
 	void setup() override;
 
 	gl::GlslProgRef setupRenderShader();
+	void uploadRates(float * ratePair);
 
 	void update() override;
 	void draw() override;
@@ -44,8 +45,31 @@ public:
 	int mRDRenderFboBinding = 1;
 };
 
+static float typeAlpha[] = { 0.010, 0.047 };
+static float typeBeta[] = { 0.014, 0.039 };
+static float typeGamma[] = { 0.022, 0.051 };
+// optional: 0.024, 0.058
+static float typeEpsilon[] = { 0.018, 0.055 };
+static float typeTheta[] = { 0.038, 0.061 };
+// optional: 0.0545, 0.062
+static float typeXi[] = { 0.014, 0.047 };
+
+// Not so interesting, or there are better versions elsewhere:
+// static float typeKappa[] = { 0.050, 0.063 };
+// static float typeRho[] = { 0.090, 0.059 };
+// static float typeSigma[] = { 0.110, 0.0523 };
+
+static std::map<int, float *> availableTypes = {
+	{1, typeAlpha},
+	{2, typeBeta},
+	{3, typeGamma},
+	{4, typeEpsilon},
+	{5, typeTheta},
+	{6, typeXi},
+};
+
 void ReactionDiffusionApp::prepSettings(Settings * settings) {
-	// settings->setFullScreen();
+	settings->setFullScreen();
 	settings->setTitle("Reaction Diffusion Interpretation");
 	// settings->setHighDensityDisplayEnabled();
 }
@@ -64,6 +88,7 @@ void ReactionDiffusionApp::setup()
 	mRDProgram->uniform("gridWidth", mWidth);
 	mRDProgram->uniform("gridHeight", mHeight);
 	mRDProgram->uniform("uPrevFrame", mRDReadFboBinding);
+	uploadRates(typeEpsilon);
 
 	mRenderRDProgram = setupRenderShader();
 
@@ -78,6 +103,11 @@ gl::GlslProgRef ReactionDiffusionApp::setupRenderShader() {
 	auto renderProgram = gl::GlslProg::create(loadAsset("v_passThrough.glsl"), loadAsset("f_renderGrid.glsl"));
 	renderProgram->uniform("uGridSampler", mRDRenderFboBinding);
 	return renderProgram;
+}
+
+void ReactionDiffusionApp::uploadRates(float * ratePair) {
+	mRDProgram->uniform("feedRateA", ratePair[0]);
+	mRDProgram->uniform("killRateB", ratePair[1]);
 }
 
 void ReactionDiffusionApp::update()
@@ -124,8 +154,11 @@ void ReactionDiffusionApp::mouseDrag(MouseEvent evt) {
 }
 
 void ReactionDiffusionApp::keyUp(KeyEvent evt) {
-	if (evt.getChar() == 'r') {
+	char keyChar = evt.getChar();
+	if (keyChar == 'r') {
 		mRenderRDProgram = setupRenderShader();
+	} else if ('0' <= keyChar && keyChar <= '0' + availableTypes.size()) {
+		uploadRates(availableTypes[keyChar - '0']);
 	}
 }
 
