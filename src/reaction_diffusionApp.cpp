@@ -15,10 +15,14 @@ class ReactionDiffusionApp : public App {
 public:
 	static void prepSettings(Settings * settings);
 	void setup() override;
+
+	gl::GlslProgRef setupRenderShader();
+
 	void update() override;
 	void draw() override;
 
 	void mouseDrag(MouseEvent evt) override;
+	void keyUp(KeyEvent evt) override;
 
 	void drawVectorToFBO(std::vector<Color> const & pixelBuffer);
 	void setupRoundedSquareRD(float side);
@@ -61,14 +65,19 @@ void ReactionDiffusionApp::setup()
 	mRDProgram->uniform("gridHeight", mHeight);
 	mRDProgram->uniform("uPrevFrame", mRDReadFboBinding);
 
-	mRenderRDProgram = gl::GlslProg::create(loadAsset("v_passThrough.glsl"), loadAsset("f_renderGrid.glsl"));
-	mRenderRDProgram->uniform("uGridSampler", mRDRenderFboBinding);
+	mRenderRDProgram = setupRenderShader();
 
 	gl::setMatricesWindow(mWidth, mHeight);
 
 	// setupCircleRD(20);
 	setupSquareRD(40);
 	// setupRoundedSquareRD(40);
+}
+
+gl::GlslProgRef ReactionDiffusionApp::setupRenderShader() {
+	auto renderProgram = gl::GlslProg::create(loadAsset("v_passThrough.glsl"), loadAsset("f_renderGrid.glsl"));
+	renderProgram->uniform("uGridSampler", mRDRenderFboBinding);
+	return renderProgram;
 }
 
 void ReactionDiffusionApp::update()
@@ -112,6 +121,12 @@ void ReactionDiffusionApp::mouseDrag(MouseEvent evt) {
 	float radius = evt.isMetaDown() ? 50.0f : 10.0f;
 	gl::ScopedColor scpC(setValue);
 	gl::drawSolidCircle(evt.getPos(), radius);
+}
+
+void ReactionDiffusionApp::keyUp(KeyEvent evt) {
+	if (evt.getChar() == 'r') {
+		mRenderRDProgram = setupRenderShader();
+	}
 }
 
 Color & idxGrid(std::vector<Color> * grid, int width, int x, int y) {
