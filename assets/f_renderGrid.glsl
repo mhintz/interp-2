@@ -68,5 +68,9 @@ void main() {
 
   vec3 baseColor = interpColorScheme(B);
 
+  // vec3 baseColor = interpColorScheme(B) * vec3(abs(cos(3.49350981 * A)), abs(sin(12.123012481 * A)), 1.0);
+
+  // vec3 baseColor = mix(vec3(1.0, 1.0, 1.0), vec3(0.0, 0.0, 0.0), A);
+
   FragColor = vec4(baseColor, 1.0);
 }
