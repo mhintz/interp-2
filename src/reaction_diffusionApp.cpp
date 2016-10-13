@@ -46,13 +46,18 @@ public:
 };
 
 static float typeAlpha[] = { 0.010, 0.047 };
+static float typeDelta[] = { 0.042, 0.059 };
 static float typeBeta[] = { 0.014, 0.039 };
 static float typeGamma[] = { 0.022, 0.051 };
 // optional: 0.024, 0.058
 static float typeEpsilon[] = { 0.018, 0.055 };
+static float typeZeta[] = { 0.022, 0.061 };
+static float typeEta[] = { 0.034, 0.063 };
 static float typeTheta[] = { 0.038, 0.061 };
+static float typeLambda[] = { 0.034, 0.065 };
 // optional: 0.0545, 0.062
 static float typeXi[] = { 0.014, 0.047 };
+static float typePi[] = { 0.062, 0.061 };
 
 // Not so interesting, or there are better versions elsewhere:
 // static float typeKappa[] = { 0.050, 0.063 };
@@ -66,6 +71,7 @@ static std::map<int, float *> availableTypes = {
 	{4, typeEpsilon},
 	{5, typeTheta},
 	{6, typeXi},
+	{7, typePi},
 };
 
 void ReactionDiffusionApp::prepSettings(Settings * settings) {
