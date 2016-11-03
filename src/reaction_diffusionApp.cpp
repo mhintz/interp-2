@@ -38,11 +38,16 @@ public:
 	gl::FboRef mSourceFbo;
 	gl::FboRef mDestFbo;
 
+	gl::FboRef mRenderFbo;
+
 	gl::GlslProgRef mRDProgram;
 	gl::GlslProgRef mRenderRDProgram;
 
+	bool mPauseSimulation = false;
+
 	int mRDReadFboBinding = 0;
 	int mRDRenderFboBinding = 1;
+	int mRenderFboBinding = 2;
 };
 
 static float typeAlpha[] = { 0.010, 0.047 };
@@ -54,13 +59,14 @@ static float typeEpsilon[] = { 0.018, 0.055 };
 static float typeZeta[] = { 0.022, 0.061 };
 static float typeEta[] = { 0.034, 0.063 };
 static float typeTheta[] = { 0.038, 0.061 };
+// static float typeKappa[] = { 0.050, 0.063 };
+static float typeKappa[] = { 0.0545, 0.062 };
 static float typeLambda[] = { 0.034, 0.065 };
 // optional: 0.0545, 0.062
 static float typeXi[] = { 0.014, 0.047 };
 static float typePi[] = { 0.062, 0.061 };
 
 // Not so interesting, or there are better versions elsewhere:
-// static float typeKappa[] = { 0.050, 0.063 };
 // static float typeRho[] = { 0.090, 0.059 };
 // static float typeSigma[] = { 0.110, 0.0523 };
 
@@ -72,7 +78,11 @@ static std::map<int, float *> availableTypes = {
 	{5, typeTheta},
 	{6, typeXi},
 	{7, typePi},
+	{8, typeLambda},
+	{9, typeKappa},
 };
+
+static int mInitialType = 9;
 
 void ReactionDiffusionApp::prepSettings(Settings * settings) {
 	settings->setFullScreen();
@@ -87,14 +97,17 @@ void ReactionDiffusionApp::setup()
 
 	gl::Texture2d::Format colorTextureFormat = gl::Texture2d::Format().internalFormat(GL_RGB32F).wrap(GL_REPEAT);
 	gl::Fbo::Format gridFboFmt = gl::Fbo::Format().colorTexture(colorTextureFormat);
+
 	mSourceFbo = gl::Fbo::create(mWidth, mHeight, gridFboFmt);
 	mDestFbo = gl::Fbo::create(mWidth, mHeight, gridFboFmt);
+
+	mRenderFbo = gl::Fbo::create(mWidth, mHeight);
 
 	mRDProgram = gl::GlslProg::create(loadAsset("v_passThrough.glsl"), loadAsset("f_reactionDiffusion.glsl"));
 	mRDProgram->uniform("gridWidth", mWidth);
 	mRDProgram->uniform("gridHeight", mHeight);
 	mRDProgram->uniform("uPrevFrame", mRDReadFboBinding);
-	uploadRates(typeEpsilon);
+	uploadRates(availableTypes[mInitialType]);
 
 	mRenderRDProgram = setupRenderShader();
 
@@ -118,18 +131,20 @@ void ReactionDiffusionApp::uploadRates(float * ratePair) {
 
 void ReactionDiffusionApp::update()
 {
-	// Update the reaction-diffusion system multiple times per frame to speed things up
-	for (int i = 0; i < 10; i++) {
-		// Bind the source FBO to read the previous state
-		gl::ScopedTextureBind scpTex(mSourceFbo->getColorTexture(), mRDReadFboBinding);
-		// Bind the destination FBO to receive the new state
-		gl::ScopedFramebuffer scpFB(mDestFbo);
-		// Bind the update program
-		gl::ScopedGlslProg scpShader(mRDProgram);
-		// Draw a full screen rectangle
-		gl::drawSolidRect(getWindowBounds());
-		// Swap the source and destination FBOs for the next frame
-		std::swap(mSourceFbo, mDestFbo);
+	if (!mPauseSimulation) {	
+		// Update the reaction-diffusion system multiple times per frame to speed things up
+		for (int i = 0; i < 10; i++) {
+			// Bind the source FBO to read the previous state
+			gl::ScopedTextureBind scpTex(mSourceFbo->getColorTexture(), mRDReadFboBinding);
+			// Bind the destination FBO to receive the new state
+			gl::ScopedFramebuffer scpFB(mDestFbo);
+			// Bind the update program
+			gl::ScopedGlslProg scpShader(mRDProgram);
+			// Draw a full screen rectangle
+			gl::drawSolidRect(getWindowBounds());
+			// Swap the source and destination FBOs for the next frame
+			std::swap(mSourceFbo, mDestFbo);
+		}
 	}
 }
 
@@ -140,12 +155,19 @@ void ReactionDiffusionApp::draw()
 	// For debugging initial state
 	// gl::ScopedTextureBind scpTex(mSourceFbo->getColorTexture(), mRDRenderFboBinding);
 
-	// Draws the reaction-diffusion FBO
-	gl::ScopedTextureBind scpTex(mDestFbo->getColorTexture(), mRDRenderFboBinding);
-	// The reaction-diffusion render shader
-	gl::ScopedGlslProg scpShader(mRenderRDProgram);
-	// Draw a full screen rectangle
-	gl::drawSolidRect(getWindowBounds());
+	{	
+		gl::ScopedFramebuffer scpFB(mRenderFbo);
+		// Draws the reaction-diffusion FBO
+		gl::ScopedTextureBind scpTex(mDestFbo->getColorTexture(), mRDRenderFboBinding);
+		// The reaction-diffusion render shader
+		gl::ScopedGlslProg scpShader(mRenderRDProgram);
+		// Draw a full screen rectangle
+		gl::drawSolidRect(getWindowBounds());
+	}
+
+	{
+		gl::draw(mRenderFbo->getColorTexture());
+	}
 
 	// Draw the framerate
 	gl::drawString(std::to_string(getAverageFps()), vec2(10.0f, 20.0f), ColorA(0.0f, 0.0f, 0.0f, 1.0f));
@@ -163,7 +185,9 @@ void ReactionDiffusionApp::keyUp(KeyEvent evt) {
 	char keyChar = evt.getChar();
 	if (keyChar == 'r') {
 		mRenderRDProgram = setupRenderShader();
-	} else if ('0' <= keyChar && keyChar <= '0' + availableTypes.size()) {
+	} else if (keyChar == 'p') {
+		mPauseSimulation = !mPauseSimulation;
+	} else if ('0' < keyChar && keyChar <= '0' + availableTypes.size()) {
 		uploadRates(availableTypes[keyChar - '0']);
 	}
 }
