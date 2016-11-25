@@ -20,6 +20,9 @@
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		C2F9E273871A4F189253FFC1 /* reaction_diffusionApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE0AD2C84A9D4CF9AF96971F /* reaction_diffusionApp.cpp */; };
 		CB99EF755F0B44F3ABE7716D /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 1F107267809B402FA0EA2D5F /* CinderApp.icns */; };
+		EF69369F1DE6E9240010239C /* f_reactionDiffusion.glsl in Resources */ = {isa = PBXBuildFile; fileRef = EF69369C1DE6E9240010239C /* f_reactionDiffusion.glsl */; };
+		EF6936A01DE6E9240010239C /* f_renderGrid.glsl in Resources */ = {isa = PBXBuildFile; fileRef = EF69369D1DE6E9240010239C /* f_renderGrid.glsl */; };
+		EF6936A11DE6E9250010239C /* v_passThrough.glsl in Resources */ = {isa = PBXBuildFile; fileRef = EF69369E1DE6E9240010239C /* v_passThrough.glsl */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +44,9 @@
 		83236771C4784A42B689F166 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* reaction_diffusion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = reaction_diffusion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1CD8921F28A4AC7A4D5D5DE /* reaction_diffusion_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = reaction_diffusion_Prefix.pch; sourceTree = "<group>"; };
+		EF69369C1DE6E9240010239C /* f_reactionDiffusion.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = f_reactionDiffusion.glsl; sourceTree = "<group>"; };
+		EF69369D1DE6E9240010239C /* f_renderGrid.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = f_renderGrid.glsl; sourceTree = "<group>"; };
+		EF69369E1DE6E9240010239C /* v_passThrough.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = v_passThrough.glsl; sourceTree = "<group>"; };
 		FE0AD2C84A9D4CF9AF96971F /* reaction_diffusionApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = reaction_diffusionApp.cpp; path = ../src/reaction_diffusionApp.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -123,6 +129,7 @@
 				01B97315FEAEA392516A2CEA /* Blocks */,
 				29B97315FDCFA39411CA2CEA /* Headers */,
 				080E96DDFE201D6D7F000001 /* Source */,
+				EF69369B1DE6E9240010239C /* Assets */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
@@ -162,6 +169,17 @@
 			children = (
 			);
 			name = "New Group";
+			sourceTree = "<group>";
+		};
+		EF69369B1DE6E9240010239C /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				EF69369C1DE6E9240010239C /* f_reactionDiffusion.glsl */,
+				EF69369D1DE6E9240010239C /* f_renderGrid.glsl */,
+				EF69369E1DE6E9240010239C /* v_passThrough.glsl */,
+			);
+			name = Assets;
+			path = ../assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -217,6 +235,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB99EF755F0B44F3ABE7716D /* CinderApp.icns in Resources */,
+				EF69369F1DE6E9240010239C /* f_reactionDiffusion.glsl in Resources */,
+				EF6936A01DE6E9240010239C /* f_renderGrid.glsl in Resources */,
+				EF6936A11DE6E9250010239C /* v_passThrough.glsl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
