@@ -83,6 +83,7 @@ static std::map<int, float *> availableTypes = {
 };
 
 static int mInitialType = 9;
+static int updatesPerFrame = 10;
 
 void ReactionDiffusionApp::prepSettings(Settings * settings) {
 	settings->setFullScreen();
@@ -133,7 +134,7 @@ void ReactionDiffusionApp::update()
 {
 	if (!mPauseSimulation) {	
 		// Update the reaction-diffusion system multiple times per frame to speed things up
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < updatesPerFrame; i++) {
 			// Bind the source FBO to read the previous state
 			gl::ScopedTextureBind scpTex(mSourceFbo->getColorTexture(), mRDReadFboBinding);
 			// Bind the destination FBO to receive the new state
