@@ -96,7 +96,11 @@ void ReactionDiffusionApp::setup()
 	mWidth = getWindowWidth();
 	mHeight = getWindowHeight();
 
-	gl::Texture2d::Format colorTextureFormat = gl::Texture2d::Format().internalFormat(GL_RGB32F).wrap(GL_REPEAT);
+	gl::Texture2d::Format colorTextureFormat = gl::Texture2d::Format()
+		.internalFormat(GL_RGB32F)
+		.wrap(GL_REPEAT)
+		.minFilter(GL_NEAREST)
+		.magFilter(GL_NEAREST);
 	gl::Fbo::Format gridFboFmt = gl::Fbo::Format().colorTexture(colorTextureFormat);
 
 	mSourceFbo = gl::Fbo::create(mWidth, mHeight, gridFboFmt);
